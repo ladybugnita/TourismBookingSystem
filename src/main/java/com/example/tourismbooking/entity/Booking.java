@@ -2,7 +2,7 @@ package com.example.tourismbooking.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDate;
 
 @Entity
@@ -26,9 +26,9 @@ public class Booking {
     @Min(value =1,message ="Quantity must be at least 1")
     private int quantity;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "tourism_package_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties("bookings")
     private TourismPackage tourismPackage;
 
     public Booking() {

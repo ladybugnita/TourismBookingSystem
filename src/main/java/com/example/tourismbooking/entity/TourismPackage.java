@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
@@ -14,19 +15,24 @@ public class TourismPackage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
+    @NotBlank(message ="package name is required")
+    @Pattern(regexp = "^[A-Za-z ]+$", message = "User name can contain only alphabets and spaces")
     private String name;
-    @NotNull
+    @NotNull(message = "Total quantity is required")
+    @Positive(message = "Total quantity must be greater than 0")
     private Integer totalQuantity;
     private Integer availableQuantity;
-    @NotBlank
+    @NotBlank(message ="Description is required")
     private String description;
-    @NotNull
+    @Positive(message="price must be greater than 0")
+    @NotNull(message = "Price is required")
     private double price;
-    @NotNull
+    @NotNull(message =" Booking deadline is required")
+    @FutureOrPresent(message = "Booking deadline must be today or in the future")
     private LocalDate bookingDeadline;
 
-    @OneToMany(mappedBy ="tourismPackage", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy ="tourismPackage", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("tourismPackage")
     private List<Booking> bookings = new ArrayList<>();
     public TourismPackage(){}
     public Long getId(){
