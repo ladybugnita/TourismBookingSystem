@@ -31,6 +31,13 @@ public class Booking {
     @JsonIgnoreProperties("bookings")
     private TourismPackage tourismPackage;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_status")
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+
+    @Column(name = "payment_reference")
+    private String paymentReference;
+
     public Booking() {
     }
     public Booking(String userName, String userEmail,int quantity, TourismPackage tourismPackage){
@@ -98,5 +105,17 @@ public class Booking {
 
     public void setTourismPackage(TourismPackage tourismPackage) {
         this.tourismPackage = tourismPackage;
+    }
+    public PaymentStatus getPaymentStatus(){
+        return paymentStatus;
+    }
+    public void setPaymentStatus(PaymentStatus paymentStatus){
+        this.paymentStatus = paymentStatus;
+    }
+    public String getPaymentReference(){
+        return paymentReference;
+    }
+    public void setPaymentReference(String paymentReference){
+        this.paymentReference = paymentReference;
     }
 }
