@@ -5,7 +5,7 @@ import com.example.tourismbooking.repository.TourismPackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class TourismPackageService {
@@ -21,9 +21,8 @@ public class TourismPackageService {
     public List<TourismPackage> getAllPackages(){
     return repository.findAll();
     }
-    public TourismPackage getPackageById(Long id){
-    return repository.findById(id)
-            .orElseThrow(() -> new RuntimeException("package not found with id:" + id));
+    public Optional <TourismPackage> getPackageById(Long id){
+    return repository.findById(id);
     }
     public TourismPackage updatePackage(Long id, TourismPackage updatedpkg){
         TourismPackage existingpkg = repository.findById(id)

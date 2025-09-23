@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 @Entity
 @Table(name = "tourism_package")
-@JsonIgnoreProperties({"bookings"})
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","bookings"})
 public class TourismPackage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

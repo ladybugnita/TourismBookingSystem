@@ -6,20 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDate;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "booking")
 public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "User name is required")
-    @Pattern(regexp = "^[A-Za-z ]+$", message = "User name can contain only alphabets and spaces")
-    private String userName;
-
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
-    private String userEmail;
 
     @NotNull(message = "Booking date is required")
     private LocalDate bookingDate;
@@ -31,20 +24,35 @@ public class Booking {
     @JsonIgnoreProperties("bookings")
     private TourismPackage tourismPackage;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"bookings"})
+    private User user;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status")
-    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+    public static PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
     @Column(name = "payment_reference")
     private String paymentReference;
 
+    private LocalDate paymentDate;
+
+    public enum PaymentStatus {
+        PENDING, COMPLETED, FAILED, REFUNDED
+    }
+
+    public boolean isEditable(){
+        return paymentStatus != PaymentStatus.COMPLETED;
+    }
+
     public Booking() {
     }
-    public Booking(String userName, String userEmail,int quantity, TourismPackage tourismPackage){
-        this.userName = userName;
-        this.userEmail = userEmail;
+    public Booking(int quantity, LocalDate bookingDate,TourismPackage tourismPackage, User user){
         this.quantity = quantity;
+        this.bookingDate = bookingDate;
         this.tourismPackage = tourismPackage;
+        this.user = user;
     }
     @PrePersist
     public void prePersist(){
@@ -61,25 +69,6 @@ public class Booking {
 
         this.id = id;
     }
-
-    public String getUserName() {
-
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-
-        this.userEmail = userEmail;
-    }
-
     public LocalDate getBookingDate() {
 
         return bookingDate;
@@ -106,6 +95,12 @@ public class Booking {
     public void setTourismPackage(TourismPackage tourismPackage) {
         this.tourismPackage = tourismPackage;
     }
+    public User getUser(){
+        return user;
+    }
+    public void setUser(User user){
+        this.user = user;
+    }
     public PaymentStatus getPaymentStatus(){
         return paymentStatus;
     }
@@ -117,5 +112,11 @@ public class Booking {
     }
     public void setPaymentReference(String paymentReference){
         this.paymentReference = paymentReference;
+    }
+    public LocalDate getPaymentDate(){
+        return paymentDate;
+    }
+    public void setPaymentDate(LocalDate paymentDate){
+        this.paymentDate = paymentDate;
     }
 }
