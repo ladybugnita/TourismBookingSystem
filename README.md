@@ -27,7 +27,7 @@ Nepal attracts travellers from around the world, but many local tour operators s
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Category | Technology |
 |---|---|
@@ -40,7 +40,7 @@ Nepal attracts travellers from around the world, but many local tour operators s
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 src/main/java/.../
@@ -70,7 +70,7 @@ All REST APIs were tested with Postman.
 
 ---
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - Java 17
